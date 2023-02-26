@@ -8,9 +8,21 @@ server.use(cors());
 
 const PORT = 3000;
 
+function Movielibrary(title,poster_path,overview){
+    this.title = title;
+    this.poster_path = poster_path
+    this.overview = overview
+}
+
+server.get('/',(req,res)=>{
+    const MovieData = require('./Movie Data/data.json')
+    const movies = new Movielibrary(MovieData.title,MovieData.poster_path,MovieData.overview)
+    res.send(movies);
+})
 
 server.get('/favorite',(req,res)=>{
-    res.send("Welcome to Favorite Page");
+    let test ="Welcome to Favorite Page"
+    res.send(test);
 })
 
 
@@ -21,4 +33,9 @@ server.get('*',(req,res)=>{
 server.get('*',(req,res)=>{
     res.status(500).send("Sorry, something went wrong");
 })
+
+server.listen(PORT, () =>{
+    console.log(`listening on ${PORT} : I am ready`);
+})
+
 
