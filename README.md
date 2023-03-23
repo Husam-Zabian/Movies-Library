@@ -17,3 +17,5 @@ u musT BUILD AN CONSTRUCTOR TO ABLE TO RETURN THE specific proprties that u want
 you can search the movies and you can see the upcomming movies and the most trending ones also you can see the nowplayingg movies
 
 ##
+
+now we can make the full CRUD in our DatabaseServer throught the back end and specify the selection of the rows of the tables

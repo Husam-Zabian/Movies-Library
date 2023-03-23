@@ -190,6 +190,69 @@ server.get('/getMovies', (req, res) => {
         })
 })
 
+
+
+server.put('/UPDATE/:id', (req, res) => {
+    const id = req.params.id;
+    if (!isNaN(id)) {
+        const Movies = req.body;
+        const sql = `UPDATE movielibrary SET title =$1 , poster_Path =$2 , overview =$3 WHERE id = ${id} RETURNING *;`
+        const values = [Movies.title, Movies.poster_path, Movies.overview];
+
+        client.query(sql, values)
+            .then((data) => {
+                res.status(200).send(data.rows);
+            })
+            .catch(error => {
+                // console.log(error);
+                errorHandler(error, req, res);
+            });
+    }
+    else {
+        res.send("Id Must Be Numaric");
+    }
+
+})
+
+//DELETE Movies
+server.delete('/DELETE/:id', (req, res) => {
+    const id = req.params.id;
+    if (!isNaN(id)) {
+        const sqlQuery = `DELETE FROM movielibrary WHERE id = ${id};`;
+        client.query(sqlQuery)
+            .then((data) => {
+                res.status(204).json({});
+            })
+            .catch((err) => {
+                errorHandler(err, req, res);
+            })
+    }
+    else {
+        res.send("Id Must Be Numaric");
+    }
+
+
+})
+
+
+// //select Movies
+server.get('/getMovie/:id', (req, res) => {
+    const id = req.params.id;
+    if (!isNaN(id)) {
+        const sqlQuery = `SELECT * FROM movielibrary WHERE id = ${id};`;
+        client.query(sqlQuery)
+            .then((data) => {
+                res.send(data.rows);
+            })
+            .catch((err) => {
+                errorHandler(err, req, res);
+            })
+    }
+    else {
+        res.send("Id Must Be Numaric");
+    }
+})
+
 server.get('*',(req,res)=>{
     res.status(404).send("page not found error");
 })
