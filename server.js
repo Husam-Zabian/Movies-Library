@@ -6,13 +6,15 @@ const server = express();
 
 const axios = require('axios');
 require('dotenv').config();
-
+const pg = require('pg');
 
 server.use(cors());
 
-
+server.use(express.json());
 
 const PORT = 3000;
+
+const client = new pg.Client(process.env.DATABASE_URL);
 
 server.get('/trending', testTrending);
 server.get('/search', testSearch);
@@ -45,9 +47,9 @@ server.get('/',(req,res)=>{
 //     res.status(500).send("Sorry, something went wrong");
 // })
 
-server.listen(PORT, () =>{
-    console.log(`listening on ${PORT} : I am ready`);
-})
+// server.listen(PORT, () =>{
+//     console.log(`listening on ${PORT} : I am ready`);
+// })
 
 //Trending
 
@@ -160,6 +162,42 @@ function testUpcoming(req, res)  {
   
 }
 
+//add Movie route
+server.post('/addMovie', (req, res) => {
+    const Movies = req.body;
+    const sql = `INSERT INTO movielibrary (title, poster_Path, overview) VALUES ($1, $2, $3) RETURNING *;`
+    const values = [Movies.title, Movies.poster_path, Movies.overview];
+
+    client.query(sql, values)
+        .then((data) => {
+            res.send("your data was added !");
+        })
+        .catch(error => {
+            // console.log(error);
+            errorHandler(error, req, res);
+        });
+})
+
+//get Movies route
+server.get('/getMovies', (req, res) => {
+    const sqlQuery = `SELECT * FROM movielibrary`;
+    client.query(sqlQuery)
+        .then((data) => {
+            res.send(data.rows);
+        })
+        .catch((err) => {
+            errorHandler(err, req, res);
+        })
+})
+
 server.get('*',(req,res)=>{
     res.status(404).send("page not found error");
+})
+
+
+client.connect()
+.then(()=>{
+    server.listen(PORT, () => {
+        console.log(`listening on ${PORT} : I am ready`);
+    });  
 })
