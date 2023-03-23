@@ -11,7 +11,9 @@ Add an image of your WRRC here
 ## Overview
 
 ## Getting Started
-<!-- What are the steps that a user must take in order to build this app on their own machine and get it running? -->
+u musT BUILD AN CONSTRUCTOR TO ABLE TO RETURN THE specific proprties that u want from tyhe api and you have to creat a server routes and specify the type of the route to do the specific function
 
 ## Project Features
-<!-- What are the features included in you app -->
+you can search the movies and you can see the upcomming movies and the most trending ones also you can see the nowplayingg movies
+
+##
